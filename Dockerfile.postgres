@@ -1,0 +1,14 @@
+FROM postgres
+
+ENV POSTGRES_PASSWORD=Pg123
+ENV POSTGRES_USER=kubenews
+ENV POSTGRES_DB=kubenews
+
+RUN localedef -i de_DE -c -f UTF-8 -A /usr/share/locale/locale.alias de_DE.UTF-8
+ENV LANG de_DE.utf8
+
+EXPOSE 5432
+
+# docker network create devops-rede
+# docker build -f Dockerfile.postgres -t danielucb/devops-postres-volume:v1.0 .
+# docker run -dti --name devops-postgres-volume --network devops-rede -p 5432:5432 -v devops-kubenews_vol-postres:/var/lib/postgresql/data danielucb/devops-postres-volume:v1.0 /bin/bash

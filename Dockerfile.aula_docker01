@@ -1,0 +1,26 @@
+FROM ubuntu
+
+ARG NODE_MAJOR=21
+
+RUN apt update && apt upgrade -y && apt autoremove -y
+
+RUN apt install curl -y
+
+RUN curl -fsSL https://deb.nodesource.com/setup_$NODE_MAJOR.x | bash - &&\
+    apt install -y nodejs
+
+WORKDIR /app
+
+COPY ./src .
+
+RUN npm install
+
+ENV DB_DATABASE=kubenews
+ENV DB_USERNAME=kubenews
+ENV DB_PASSWORD=Pg123
+ENV DB_HOST=devops-postgres-volume
+
+#ENTRYPOINT [ "node", "server.js" ]
+
+# docker build -f Dockerfile.aula_docker01 -t danielucb/devops-ubuntu-volume:v1.0 .
+# docker run -dti --name devops-ubuntu-volume --network devops-rede -p 8080:8080 danielucb/devops-ubuntu-volume:v1.0 /bin/bash
