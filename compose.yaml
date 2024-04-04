@@ -1,0 +1,46 @@
+services:
+  postgres:
+    image: danielucb/devops-postgres-volume:${POSTGRES_TAG:-latest}
+    build:
+      context: .
+      dockerfile: Dockerfile.postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - devops-kubenews_vol-postres:/var/lib/postgresql/data
+    networks:
+      - kube_news_net
+  
+  kube_news:
+    image: danielucb/devops-node-volume:${KUBE_NEWS_TAG}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    networks:
+      - kube_news_net
+    environment: 
+      - DB_DATABASE=${POSTGRES_DB}
+      - DB_USERNAME=${POSTGRES_USER}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - DB_HOST=postgres
+    depends_on:
+      - postgres
+
+
+volumes:
+  devops-kubenews_vol-postres:
+    name: devops-kubenews_vol-postres
+    external: true
+
+networks:
+  kube_news_net:
+    name: kube_news_net
+    driver: bridge
+
+# docker compose up -d --build --remove-orphans

@@ -1,0 +1,17 @@
+services:
+  kube_news:
+    image: danielucb/devops-node-volume:${KUBE_NEWS_TAG}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 8080:8080
+    networks:
+      - kube_news_net
+    environment: 
+      - DB_DATABASE=${POSTGRES_DB}
+      - DB_USERNAME=${POSTGRES_USER}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - DB_HOST=postgres   # passo o nome do service
+    depends_on:
+      - postgres

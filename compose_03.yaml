@@ -1,0 +1,39 @@
+#version: "3.8"
+
+services:
+  postgres:
+    image: postgres:12.17
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=Pg123
+      - POSTGRES_USER=kubenews
+      - POSTGRES_DB=kubenews
+    volumes:
+      - devops-kubenews_vol-postres:/var/lib/postgresql/data
+    networks:
+      - kube_news_net
+  
+  kubenews:
+    image: danielucb/devops-node-volume:v1.0
+    ports:
+      - 8080:8080
+    networks:
+      - kube_news_net
+    environment: 
+      - DB_DATABASE=kubenews
+      - DB_USERNAME=kubenews
+      - DB_PASSWORD=Pg123
+      - DB_HOST=postgres   # passo o nome do service
+    depends_on:
+      - postgres
+
+volumes:
+  devops-kubenews_vol-postres:
+    name: devops-kubenews_vol-postres  # mantendo o nome anterior
+    external: true  # utilizar um volume existente
+
+networks:
+  kube_news_net:
+    name: kube_news_net
+    driver: bridge

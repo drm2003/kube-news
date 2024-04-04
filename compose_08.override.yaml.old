@@ -1,0 +1,3 @@
+services:
+  kube_news:
+    image: danielucb/web-devops-postgres-volume:${POSTGRES_TAG:-latest}

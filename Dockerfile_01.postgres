@@ -1,4 +1,4 @@
-FROM postgres:12.17
+FROM postgres
 
 ENV POSTGRES_PASSWORD=Pg123
 ENV POSTGRES_USER=kubenews

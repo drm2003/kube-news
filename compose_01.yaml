@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:12.17
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=Pg123
+      - POSTGRES_USER=kubenews
+      - POSTGRES_DB=kubenews
+    volumes:
+      - ./postgres_vol:/var/lib/postgresql/data
+
+# docker compose -f compose_01.yaml up -d
